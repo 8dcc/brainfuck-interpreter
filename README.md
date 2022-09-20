@@ -1,2 +1,2 @@
-# brainfuck-interpreter
-Interactive brainfuck interpreter made in C
+# Brainfuck interpreter
+**Interactive brainfuck interpreter made in C**
