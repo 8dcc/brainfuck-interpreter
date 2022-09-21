@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <ctype.h>      // For tolower()
 #include <ncurses.h>
 
@@ -11,8 +10,7 @@ int main() {
     initscr();      // Init ncurses
 
     // Declare and initialize as -1 the cell array for the memory simulation
-    int* cell_arr = malloc(GRID_C * sizeof(int));
-    memset(cell_arr, 0, GRID_C * sizeof(int));
+    int* cell_arr = calloc(GRID_C, sizeof(int));
 
     cell_arr[3] = 100;
 
