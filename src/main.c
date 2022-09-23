@@ -12,8 +12,9 @@ int main() {
     // Declare and initialize as -1 the cell array for the memory simulation
     int* cell_arr = calloc(GRID_C, sizeof(int));
 
-    cell_arr[3] = 100;
-
+    for (int n = 0; n < GRID_C; n++) {
+        cell_arr[n] = 100 + n;
+    }
 
     mvprintw(1, GRID_X, "Press 'q' to exit...");
 
@@ -28,13 +29,14 @@ int main() {
 
         draw_grid();
         
+        char* buff= calloc(255, sizeof(char));
         for (int n = 0; n < GRID_C; n++) {
-            fill_cell(n, "ab");
+            sprintf(buff, "%d", cell_arr[n]);
+            fill_cell(n, buff);
         }
     } while (tolower(getchar()) != 'q');
     
     endwin();       // End ncurses window
     return 0;
 }
-
 

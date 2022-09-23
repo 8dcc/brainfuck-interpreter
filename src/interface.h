@@ -3,8 +3,9 @@
 
 #define GRID_X 5
 #define GRID_Y 3
-#define GRID_C 255      // Max number of items
-int GRID_CW = 2;        // Default width of cells. Will change if we try to display large numbers
+#define GRID_C 30           // Max number of items. Should change depending on the terminal size
+#define MIN_GRID_CW 1       // Min width of the cells 
+int GRID_CW = MIN_GRID_CW;  // Default width of cells. Will change if we try to display large numbers
 
 void draw_grid() {
     // Define in case we want to pass this as args in the future
@@ -31,17 +32,23 @@ void draw_grid() {
          * We iterate the cell w.
          */
         for (int i = 0; i < cell_w; i++) {
-            // base x pos + left border + cell width * cell number + inner cell position
-            mvprintw(y,   x+1 + cell_w*n+i, "-");
-            mvprintw(y+1, x+1 + cell_w*n+i, " ");
-            mvprintw(y+2, x+1 + cell_w*n+i, "-");
+            // (base x pos + left border) + ((cell width + right border) * cell number) + inner cell position
+            mvprintw(y,   (x+1) + ((cell_w+1)*n) + i, "-");
+            mvprintw(y+1, (x+1) + ((cell_w+1)*n) + i, " ");
+            mvprintw(y+2, (x+1) + ((cell_w+1)*n) + i, "-");
         }
 
         // Right border
-        mvprintw(y,   x+2+cell_w*n, "+");
-        mvprintw(y+1, x+2+cell_w*n, "|");
-        mvprintw(y+2, x+2+cell_w*n, "+");
+        // base x pos + cell inner width + right border * current cell number
+        mvprintw(y,   x+(cell_w+1)*n, "+");
+        mvprintw(y+1, x+(cell_w+1)*n, "|");
+        mvprintw(y+2, x+(cell_w+1)*n, "+");
     }
+
+    // Rightmost border
+    mvprintw(y,   x+(cell_w+1)*cells, "+");
+    mvprintw(y+1, x+(cell_w+1)*cells, "|");
+    mvprintw(y+2, x+(cell_w+1)*cells, "+");
 
     REFRESH_0();
 }
@@ -56,8 +63,8 @@ void fill_cell(int idx, const char* str) {
     // Return if we are out of bounds
     if (idx >= gc) return;
 
-    // Center of y, base x pos + left border + (cell width * cell number)
-    mvprintw(gy+1, gx+1 + (gcw*idx), "%s", str);
+    // Center of y, base x pos + leftmost border + (right border of the cell + cell width) * cell number
+    mvprintw(gy+1, gx+1 + (1+gcw) * idx, "%s", str);
 
     REFRESH_0();
 }
