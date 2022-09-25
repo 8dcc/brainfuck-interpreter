@@ -15,6 +15,7 @@ int main() {
     for (int n = 0; n < GRID_C; n++) {
         cell_arr[n] = 100 + n;
     }
+    cell_arr[5] = 1337;
 
     mvprintw(1, GRID_X, "Press 'q' to exit...");
 
