@@ -1,6 +1,5 @@
 
 #define REFRESH_0() move(0,0); refresh();
-#define CLR_LINE(y) move(y,0); clrtoeol();      // TODO: Save old cursor pos and restore after clear
 
 #define GRID_X 5            // Horizontal margin for the cell grid
 #define GRID_Y 3
@@ -8,6 +7,8 @@
 int GRID_CPP = 30;          // Cells displayed per page. Will be calculated depenging on terminal width in draw_grid()
 #define MIN_GRID_CW 1       // Min width of the cells 
 int GRID_CW = MIN_GRID_CW;  // Default width of cells. Will change if we try to display large numbers
+
+void clr_line(int y);
 
 void draw_grid() {
     // Define in case we want to pass this as args in the future
@@ -25,9 +26,9 @@ void draw_grid() {
     mvprintw(x, 10, "[Debug] W: %d | Cells: %d", term_w, cells);
 
     // First clear the cell lines to remove residual chars from resizes, etc.
-    CLR_LINE(y);
-    CLR_LINE(y+1);
-    CLR_LINE(y+2);
+    clr_line(y);
+    clr_line(y+1);
+    clr_line(y+2);
 
     // Initial left border
     mvprintw(y,   x, "+");
@@ -47,7 +48,7 @@ void draw_grid() {
         for (int i = 0; i < cell_w; i++) {
             // (base x pos + left border) + ((cell width + right border) * cell number) + inner cell position
             mvprintw(y,   (x+1) + ((cell_w+1)*n) + i, "-");
-            mvprintw(y+1, (x+1) + ((cell_w+1)*n) + i, " ");
+            /* mvprintw(y+1, (x+1) + ((cell_w+1)*n) + i, " "); */
             mvprintw(y+2, (x+1) + ((cell_w+1)*n) + i, "-");
         }
 
@@ -66,6 +67,16 @@ void draw_grid() {
     REFRESH_0();
 }
 
+void clr_line(int y) {
+    // Save originals
+    int ox = 0, oy = 0;
+    getyx(stdscr, oy, ox);
+
+    move(y, 0);
+    clrtoeol();
+
+    move(oy, ox);
+}
 
 void fill_cell(int idx, const char* str) {
     const int gx   = GRID_X;

@@ -56,7 +56,8 @@ int main() {
         }
 
         // DELME
-        mvprintw(11, GRID_X, "[Debug] Pressed key: %d", c);     // TODO: Update CLR_LINE and call
+        clr_line(10);
+        mvprintw(10, GRID_X, "[Debug] Pressed key: %d", c);
         refresh();
     } while (tolower(c) != 'q');
     
