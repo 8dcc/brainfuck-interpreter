@@ -60,7 +60,7 @@ void draw_grid() {
         mvprintw(y+1, x+(cell_w+1)*n, "|");
         mvprintw(y+2, x+(cell_w+1)*n, "+");
     }
-
+ 
     // Rightmost border
     mvprintw(y,   x+(cell_w+1)*cells, "+");
     mvprintw(y+1, x+(cell_w+1)*cells, "|");
@@ -128,4 +128,14 @@ void fill_grid(int* cell_arr, int page) {
     mvprintw((PRINT_CHARS) ? GRID_Y + 4 : GRID_Y + 3, GRID_X, "[Page %d/%d]", page+1, GRID_C/GRID_CPP+1);
 
     REFRESH_0();
+}
+
+// Draws '>' + cmd
+void draw_cmd_input(char* cmd) {
+    const int cmd_y = GRID_Y + 6;
+
+    clr_line(cmd_y);
+    mvprintw(cmd_y, GRID_X, "> %s", cmd);
+
+    refresh();  // We dont call REFRESH_0() cuz we want to show the cursor after the cmd
 }

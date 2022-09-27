@@ -12,14 +12,14 @@ int main() {
     noecho();                // Don't print when typing
     keypad(stdscr, TRUE);    // Enable keypad (arrow keys)
 
+    mvprintw(1, GRID_X, "Press 'q' to exit...");
+
     // Declare and initialize as 0 the cell array for the memory simulation
     int* cell_arr = malloc(GRID_C * sizeof(int));
     for (int n = 0; n < GRID_C; n++) cell_arr[n] = n;
 
-    cell_arr[5]   = 13370;
-    cell_arr[130] = 1337;
-
-    mvprintw(1, GRID_X, "Press 'q' to exit...");
+    // Used to store the current command
+    char* cmd = calloc(255, sizeof(char));
 
     // Max pages of the grid. Updated each loop because the terminal size might
     // change
@@ -52,6 +52,9 @@ int main() {
             default:
                 break;
         }
+        
+        cmd = "Test";
+        draw_cmd_input(cmd);
     } while (tolower(c) != 'q');
 
     endwin();    // End ncurses window
