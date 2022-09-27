@@ -8,7 +8,10 @@ int GRID_CPP = 30;          // Cells displayed per page. Will be calculated depe
 #define MIN_GRID_CW 1       // Min width of the cells 
 int GRID_CW = MIN_GRID_CW;  // Default width of cells. Will change if we try to display large numbers
 
-void clr_line(int y);
+#define PRINT_CHARS 1       // Will print 'c' bellow the cells if true
+
+void clr_line(int y);       // Clears line at y, then returns cursor to previous pos
+int int2char(int num);      // Returns valid chars to be printed
 
 void draw_grid() {
     // Define in case we want to pass this as args in the future
@@ -22,13 +25,12 @@ void draw_grid() {
     if (cells < 1) return;
     GRID_CPP = cells;
 
-    // TODO: DELME
-    mvprintw(x, 10, "[Debug] W: %d | Cells: %d", term_w, cells);
-
     // First clear the cell lines to remove residual chars from resizes, etc.
     clr_line(y);
     clr_line(y+1);
     clr_line(y+2);
+    clr_line(y+3);                      // Page number line
+    if (PRINT_CHARS) clr_line(y+4);     // If we want to print chars, the page line is at pos 4
 
     // Initial left border
     mvprintw(y,   x, "+");
@@ -90,11 +92,23 @@ void fill_cell(int idx, const char* str) {
     // Center of y, base x pos + leftmost border + (right border of the cell + cell width) * cell number
     mvprintw(gy+1, gx+1 + (1+gcw) * idx, "%s", str);
 
+    // Print the chars behind the cells (centered)
+    if (PRINT_CHARS) {
+        const int converted_char = int2char(atoi(str));
+        if (converted_char)
+            mvprintw(gy+3, (gx+1 + (1+gcw) * idx) + (gcw/2-1), "'%c'", converted_char);
+    }
+
     REFRESH_0();
 }
 
+int int2char(int num) {
+    if (num >= 32 && num <= 126) return num;
+    return 0;
+}
 
-// Calls fill_cell for the necesary items to fill the whole grid
+
+// Calls fill_cell for the necesary items to fill the whole grid. Also prints the page number
 void fill_grid(int* cell_arr, int page) {
     char* buff= calloc(255, sizeof(char));
     int real_idx = 0;
@@ -111,7 +125,7 @@ void fill_grid(int* cell_arr, int page) {
     }
 
     // Print page numbers. Keep in mind that we add one so its '1/5' instead of '0/4'
-    mvprintw(GRID_Y + 3, GRID_X, "[Page %d/%d]", page+1, GRID_C/GRID_CPP+1);
+    mvprintw((PRINT_CHARS) ? GRID_Y + 4 : GRID_Y + 3, GRID_X, "[Page %d/%d]", page+1, GRID_C/GRID_CPP+1);
 
     REFRESH_0();
 }

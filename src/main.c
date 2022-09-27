@@ -17,7 +17,7 @@ int main() {
     for (int n = 0; n < GRID_C; n++)
         cell_arr[n] = n;
 
-    cell_arr[5] = 1337;
+    cell_arr[5] = 13370;
     cell_arr[130] = 1337;
 
     mvprintw(1, GRID_X, "Press 'q' to exit...");
@@ -56,8 +56,8 @@ int main() {
         }
 
         // DELME
-        clr_line(10);
-        mvprintw(10, GRID_X, "[Debug] Pressed key: %d", c);
+        clr_line(8);
+        mvprintw(8, GRID_X, "[Debug] Pressed key: %d", c);
         refresh();
     } while (tolower(c) != 'q');
     
