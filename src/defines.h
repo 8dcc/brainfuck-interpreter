@@ -4,6 +4,7 @@
 #define GRID_C      200    // Max number of items (Not items per page)
 #define MIN_GRID_CW 1      // Min width of the cells
 
+#define INPUT_Y     GRID_Y + 6
 #define OUTPUT_X    GRID_X
 #define OUTPUT_Y    GRID_Y + 8
 #define OUTPUT_ROWS 20    // Space reserved for output

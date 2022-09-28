@@ -15,7 +15,7 @@ int main() {
     noecho();                // Don't print when typing
     keypad(stdscr, TRUE);    // Enable keypad (arrow keys)
 
-    mvprintw(1, GRID_X, "Press 'q' to exit...");
+    mvprintw(1, GRID_X, "Type 'help' for a list of available commands...");
 
     // Declare and initialize as 0 the cell array for the memory simulation
     int* cell_arr = malloc(GRID_C * sizeof(int));

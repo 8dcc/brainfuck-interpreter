@@ -131,10 +131,8 @@ void fill_grid(int* cell_arr, int page) {
 
 // Draws '>' + cmd
 void draw_cmd_input(const char* cmd) {
-    const int cmd_y = GRID_Y + 6;
-
-    clr_line(cmd_y);
-    mvprintw(cmd_y, GRID_X, "> %s", cmd);
+    clr_line(INPUT_Y);
+    mvprintw(INPUT_Y, GRID_X, "> %s", cmd);
 
     refresh();    // We dont call REFRESH_0() cuz we want to show the cursor after
                   // the cmd
@@ -145,9 +143,21 @@ void clr_cmd_output() {
 }
 
 void cmd_output(const char* str) {
+    char buff[BUFF_SIZE] = { 0 };
+    int buff_pos         = 0;
+
     clr_cmd_output();
 
-    mvprintw(OUTPUT_Y, OUTPUT_X, str);
+    // Loop for printing on the same Y
+    for (int n = 0; buff_pos < BUFF_SIZE && n < BUFF_SIZE && str[n] != '\0'; n++) {
+        buff[buff_pos++] = str[n];
+
+        // After putting newline on the string, add indentation
+        if (str[n] == '\n')
+            for (int i = 0; i < OUTPUT_X; i++) buff[buff_pos++] = ' ';
+    }
+
+    mvprintw(OUTPUT_Y, OUTPUT_X, buff);
 
     refresh();
 }
