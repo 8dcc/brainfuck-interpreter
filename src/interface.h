@@ -140,7 +140,7 @@ void fill_grid(int* cell_arr, int page) {
 }
 
 // Draws '>' + cmd
-void draw_cmd_input(char* cmd) {
+void draw_cmd_input(const char* cmd) {
     const int cmd_y = GRID_Y + 6;
 
     clr_line(cmd_y);
