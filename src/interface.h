@@ -1,14 +1,4 @@
 
-#define REFRESH_0() \
-    move(0, 0);     \
-    refresh();
-
-#define GRID_X      5    // Horizontal margin for the cell grid
-#define GRID_Y      3
-#define GRID_C      200    // Max number of items (Not items per page)
-#define MIN_GRID_CW 1      // Min width of the cells
-#define PRINT_CHARS 1      // Will print 'c' bellow the cells if true
-
 int GRID_CPP = 30;    // Cells displayed per page. Will be calculated depenging on
                       // terminal width in draw_grid()
 int GRID_CW = MIN_GRID_CW;    // Default width of cells. Will change if we try to
@@ -148,4 +138,16 @@ void draw_cmd_input(const char* cmd) {
 
     refresh();    // We dont call REFRESH_0() cuz we want to show the cursor after
                   // the cmd
+}
+
+void clr_cmd_output() {
+    for (int n = 0; n < OUTPUT_ROWS; n++) clr_line(OUTPUT_Y + n);
+}
+
+void cmd_output(const char* str) {
+    clr_cmd_output();
+
+    mvprintw(OUTPUT_Y, OUTPUT_X, str);
+
+    refresh();
 }

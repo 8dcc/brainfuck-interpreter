@@ -43,11 +43,15 @@ int scan_command(char* cmd, int* pos, int max_len) {
 }
 
 // Scans for commands
-int parse_command(char* cmd) {
+int parse_command(const char* cmd) {
+    clr_cmd_output();
+
     if (strstr(cmd, "ref")) {
         refresh();
-    } else if (strstr(cmd, "quit")) {
+    } else if (strstr(cmd, "quit") || strstr(cmd, "exit")) {
         return CMD_QUIT;
+    } else {
+        cmd_output("Invalid command!");
     }
 
     return CMD_OKAY;
