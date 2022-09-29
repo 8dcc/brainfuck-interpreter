@@ -46,7 +46,6 @@ void draw_grid() {
             // (base x pos + left border) + ((cell width + right border) * cell
             // number) + inner cell position
             mvprintw(y, (x + 1) + ((cell_w + 1) * n) + i, "-");
-            /* mvprintw(y+1, (x+1) + ((cell_w+1)*n) + i, " "); */
             mvprintw(y + 2, (x + 1) + ((cell_w + 1) * n) + i, "-");
         }
 

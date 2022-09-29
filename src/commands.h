@@ -47,9 +47,9 @@ int parse_command(const char* cmd) {
 
     if (strstr(cmd, "ref")) {
         refresh();
-    } else if (strstr(cmd, "quit") || strstr(cmd, "exit")) {
+    } else if (!strcmp(cmd, "quit") || !strcmp(cmd, "exit")) {
         return CMD_QUIT;
-    } else if (strstr(cmd, "help")) {
+    } else if (!strcmp(cmd, "help")) {
         cmd_help();
     } else {
         cmd_output("Invalid command!");
