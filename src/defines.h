@@ -1,3 +1,7 @@
+
+/*--------------------------------------------------------------------------------*/
+// Defines
+
 // Interface
 #define GRID_X      5    // Horizontal margin for the cell grid
 #define GRID_Y      3
@@ -7,7 +11,7 @@
 #define INPUT_Y     GRID_Y + 6
 #define OUTPUT_X    GRID_X
 #define OUTPUT_Y    GRID_Y + 8
-#define OUTPUT_ROWS 20    // Space reserved for output
+#define OUTPUT_ROWS 40    // Space reserved for output
 
 // Cmd codes
 #define CMD_OKAY 0
@@ -20,8 +24,9 @@
 #define KEY_CTRLC  3
 
 // Misc
-#define BUFF_SIZE   255
-#define PRINT_CHARS 1    // Will print 'c' bellow the cells if true
+#define PRINT_CHARS    1    // Will print 'c' bellow the cells if true
+#define BUFF_SIZE      255
+#define FILE_BUFF_SIZE 2000    // Max brainfuck file size. Method should be improved
 
 /*--------------------------------------------------------------------------------*/
 // Macros
@@ -30,3 +35,11 @@
     move(0, 0);     \
     refresh();
 
+/*--------------------------------------------------------------------------------*/
+// Globals
+
+// Will store the loaded file's contents
+char bf[FILE_BUFF_SIZE] = { 0 };
+
+// Will be 1 if we have loaded a file
+int file_loaded = 0;

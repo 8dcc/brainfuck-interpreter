@@ -1,5 +1,7 @@
 
 void cmd_help();
+void load_file(const char* name);
+void print_file();
 
 /* Scans the command input by the user to cmd, if a special key (like the arrows) is
  * pressed, returns that integer so main can act. Return codes are in src/defines.h
@@ -51,6 +53,11 @@ int parse_command(const char* cmd) {
         return CMD_QUIT;
     } else if (!strcmp(cmd, "help")) {
         cmd_help();
+    // Commands with arguments
+    } else if (!strcmp(first_word(cmd), "load")) {
+        load_file(second_word(cmd));
+    } else if (!strcmp(first_word(cmd), "print")) {
+        print_file();
     } else {
         cmd_output("Invalid command!");
     }
@@ -59,10 +66,28 @@ int parse_command(const char* cmd) {
 }
 
 void cmd_help() {
-    cmd_output(
-            "Displaying help:\n"
-            "    help | Shows this help\n"
-            "    quit | Exit the program\n"
-            "    ref  | Calls refresh()\n"
-            );
+    cmd_output("Displaying help:\n"
+               "    help | Shows this help\n"
+               "    quit | Exit the program\n"
+               "    ref  | Calls refresh()\n");
+}
+
+void load_file(const char* name) {
+    FILE* fd = fopen(name, "r");
+    if (!fd) die("load_file: could not open file");
+
+    int c = 0;
+    for (int n = 0; n < FILE_BUFF_SIZE && (c = fgetc(fd)) != EOF; n++) {
+        bf[n] = c;
+    }
+
+    cmd_output("File loaded.");
+    file_loaded = 1;
+}
+
+// Prints the contents of the loaded file
+void print_file() {
+    if (!file_loaded) return;
+
+    cmd_output(bf);
 }
