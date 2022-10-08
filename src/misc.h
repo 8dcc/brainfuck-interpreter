@@ -12,7 +12,7 @@ int get_digits(const int target) {
 }
 
 void die(const char* s) {
-    endwin();   // End ncurses
+    endwin();    // End ncurses
 
     fwrite(s, sizeof(char), strlen(s), stderr);
 
@@ -21,13 +21,14 @@ void die(const char* s) {
 
 char* first_word(const char* s) {
     const int len = strlen(s);
-    char* buff    = malloc(len);
-    strcpy(buff, s);
+    char* buff    = calloc(len, sizeof(char));
 
     for (int n = 0; n < len; n++) {
+        buff[n] = s[n];
+
         if (buff[n] == ' ') {
             buff[n] = '\0';
-            return buff;
+            break;
         }
     }
 
@@ -36,18 +37,18 @@ char* first_word(const char* s) {
 
 char* second_word(const char* s) {
     const int len = strlen(s);
-    char* buff    = malloc(len);
-    strcpy(buff, s);
+    char* buff    = calloc(len, sizeof(char));
+    int buff_p    = 0;
 
-    // Change ptr to seccond word
-    for (int n = 0; n < len; n++)
-        if (buff[n] == ' ' && buff[n + 1] != '\0') buff = &buff[n + 1];
-
-    // End the str when the word ends
+    int spaces = 0;
     for (int n = 0; n < len; n++) {
-        if (buff[n] == ' ') {
-            buff[n] = '\0';
-            return buff;
+        if (s[n] == ' ') {
+            spaces++;
+        } else if (spaces == 1) {
+            buff[buff_p++] = s[n];
+        } else if (spaces == 2) {
+            buff[buff_p] = '\0';
+            break;
         }
     }
 
