@@ -47,7 +47,7 @@ int parse_command(const char* cmd) {
     draw_cmd_input("");    // Clear the cmd line
     clr_cmd_output();
 
-    if (strstr(cmd, "ref")) {
+    if (!strcmp(first_word(cmd), "refresh")) {
         refresh();
     } else if (!strcmp(first_word(cmd), "quit") || !strcmp(first_word(cmd), "exit")) {
         return CMD_QUIT;
@@ -71,7 +71,7 @@ void cmd_help() {
                "    quit            | Exit the program\n"
                "    load <filename> | Loads the contents of the specified file\n"
                "    print           | Prints the contents of the loaded file\n"
-               "    ref             | Calls refresh()\n");
+               "    refresh         | Calls refresh()\n");
 }
 
 void load_file(const char* name) {
