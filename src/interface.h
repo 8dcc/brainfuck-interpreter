@@ -145,27 +145,44 @@ void cmd_output(const char* str) {
     // Get terminal and output region widths
     const int term_w = getmaxx(stdscr);
     const int out_w  = (term_w - GRID_X * 2);
+    const int out_h  = OUTPUT_ROWS - 1;
 
     char buff[FILE_BUFF_SIZE] = { 0 };
     int buff_pos              = 0;
+    int line                  = 1;    // Lines printed
+    int line_p                = 0;    // Char pos in the current line
 
     clr_cmd_output();
 
-    // Loop for printing on the same Y
-    for (int n = 0;
-         buff_pos < FILE_BUFF_SIZE && n < FILE_BUFF_SIZE && str[n] != '\0'; n++) {
-        buff[buff_pos++] = str[n];
+    // Loop and load into buff for printing on the same Y and check stuff
+    for (int n = 0; buff_pos < FILE_BUFF_SIZE && n < FILE_BUFF_SIZE &&
+                    str[n] != '\0' && line < out_h;
+         n++) {
 
-        if (n > out_w) buff[buff_pos++] = '\n';
+        buff[buff_pos++] = str[n];
+        line_p++;
+
+        if (line_p > out_w) buff[buff_pos++] = '\n';
 
         // After putting newline on the string, add indentation
-        if (str[n] == '\n' || n > out_w)
+        if (str[n] == '\n' || line_p > out_w) {
+            line++;
+            line_p = 0;
+
             for (int i = 0; i < OUTPUT_X && buff_pos < FILE_BUFF_SIZE; i++)
                 buff[buff_pos++] = ' ';
+
+            // Make sure we are inside the output w
+            if (line >= out_h) {
+                buff[buff_pos++] = '.';
+                buff[buff_pos++] = '.';
+                buff[buff_pos++] = '.';
+                break;
+            }
+        }
     }
 
     mvprintw(OUTPUT_Y, OUTPUT_X, buff);
 
     refresh();
 }
-
