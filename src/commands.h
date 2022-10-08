@@ -76,7 +76,7 @@ void cmd_help() {
 
 void load_file(const char* name) {
     FILE* fd = fopen(name, "r");
-    if (!fd) die("load_file: could not open file");
+    if (!fd) die("load_file: could not open file\n");
 
     int c = 0;
     for (int n = 0; n < FILE_BUFF_SIZE && (c = fgetc(fd)) != EOF; n++) {

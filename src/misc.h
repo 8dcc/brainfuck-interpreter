@@ -12,7 +12,10 @@ int get_digits(const int target) {
 }
 
 void die(const char* s) {
+    endwin();   // End ncurses
+
     fwrite(s, sizeof(char), strlen(s), stderr);
+
     exit(1);
 }
 
