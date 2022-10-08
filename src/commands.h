@@ -49,9 +49,9 @@ int parse_command(const char* cmd) {
 
     if (strstr(cmd, "ref")) {
         refresh();
-    } else if (!strcmp(cmd, "quit") || !strcmp(cmd, "exit")) {
+    } else if (!strcmp(first_word(cmd), "quit") || !strcmp(first_word(cmd), "exit")) {
         return CMD_QUIT;
-    } else if (!strcmp(cmd, "help")) {
+    } else if (!strcmp(first_word(cmd), "help")) {
         cmd_help();
     // Commands with arguments
     } else if (!strcmp(first_word(cmd), "load")) {
@@ -76,7 +76,15 @@ void cmd_help() {
 
 void load_file(const char* name) {
     FILE* fd = fopen(name, "r");
-    if (!fd) die("load_file: could not open file\n");
+    if (!fd) {
+        char* buff = calloc(23 + strlen(name), sizeof(char));
+
+        sprintf(buff, "Could not open file: %s\n", name);
+        fail_cmd(buff);
+
+        free(buff);
+        return;
+    }
 
     int c = 0;
     for (int n = 0; n < FILE_BUFF_SIZE && (c = fgetc(fd)) != EOF; n++) {

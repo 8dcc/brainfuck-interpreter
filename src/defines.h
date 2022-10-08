@@ -32,8 +32,12 @@
 // Macros
 
 #define REFRESH_0() \
-    move(0, 0);     \
-    refresh();
+    {               \
+        move(0, 0); \
+        refresh();  \
+    }
+
+#define fail_cmd(s) cmd_output(s)
 
 /*--------------------------------------------------------------------------------*/
 // Globals
