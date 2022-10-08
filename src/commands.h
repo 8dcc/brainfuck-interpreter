@@ -67,9 +67,11 @@ int parse_command(const char* cmd) {
 
 void cmd_help() {
     cmd_output("Displaying help:\n"
-               "    help | Shows this help\n"
-               "    quit | Exit the program\n"
-               "    ref  | Calls refresh()\n");
+               "    help            | Shows this help\n"
+               "    quit            | Exit the program\n"
+               "    load <filename> | Loads the contents of the specified file\n"
+               "    print           | Prints the contents of the loaded file\n"
+               "    ref             | Calls refresh()\n");
 }
 
 void load_file(const char* name) {
