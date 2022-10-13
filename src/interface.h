@@ -121,6 +121,8 @@ void fill_grid(int* cell_arr, int page) {
         fill_cell(n, buff);
     }
 
+    free(buff);
+
     // Print page numbers. Keep in mind that we add one so its '1/5' instead of '0/4'
     mvprintw((PRINT_CHARS) ? GRID_Y + 4 : GRID_Y + 3, GRID_X, "[Page %d/%d]",
              page + 1, GRID_C / GRID_CPP + 1);

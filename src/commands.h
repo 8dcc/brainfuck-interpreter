@@ -47,20 +47,28 @@ int parse_command(const char* cmd) {
     draw_cmd_input("");    // Clear the cmd line
     clr_cmd_output();
 
-    if (!strcmp(first_word(cmd), "refresh")) {
+    // Store the word ptrs here so we can free them later. Feel free to PR if there
+    // is a better way.
+    char* fw = first_word(cmd);
+    char* sw = second_word(cmd);
+
+    if (!strcmp(fw, "refresh")) {
         refresh();
-    } else if (!strcmp(first_word(cmd), "quit") || !strcmp(first_word(cmd), "exit")) {
+    } else if (!strcmp(fw, "quit") || !strcmp(fw, "exit")) {
         return CMD_QUIT;
-    } else if (!strcmp(first_word(cmd), "help")) {
+    } else if (!strcmp(fw, "help")) {
         cmd_help();
-    // Commands with arguments
-    } else if (!strcmp(first_word(cmd), "load")) {
-        load_file(second_word(cmd));
-    } else if (!strcmp(first_word(cmd), "print")) {
+        // Commands with arguments
+    } else if (!strcmp(fw, "load")) {
+        load_file(sw);
+    } else if (!strcmp(fw, "print")) {
         print_file();
     } else {
         cmd_output("Invalid command!");
     }
+
+    free(fw);
+    free(sw);
 
     return CMD_OKAY;
 }
@@ -87,9 +95,7 @@ void load_file(const char* name) {
     }
 
     int c = 0;
-    for (int n = 0; n < FILE_BUFF_SIZE && (c = fgetc(fd)) != EOF; n++) {
-        bf[n] = c;
-    }
+    for (int n = 0; n < FILE_BUFF_SIZE && (c = fgetc(fd)) != EOF; n++) { bf[n] = c; }
 
     cmd_output("File loaded.");
     file_loaded = 1;

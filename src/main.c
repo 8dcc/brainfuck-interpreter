@@ -18,7 +18,7 @@ int main() {
     mvprintw(1, GRID_X, "Type 'help' for a list of available commands...");
 
     // Declare and initialize as 0 the cell array for the memory simulation
-    int* cell_arr = malloc(GRID_C * sizeof(int));
+    int cell_arr[GRID_C * sizeof(int)];
     for (int n = 0; n < GRID_C; n++) cell_arr[n] = n;
 
     // Used to store the current command
@@ -83,6 +83,8 @@ int main() {
                 break;    // End cmd_code switch
         }
     }    // End of main loop
+
+    free(cmd);
 
     // End ncurses window
     endwin();
