@@ -2,7 +2,8 @@
 void cmd_help();
 void load_file(const char* name);
 void unload(char* buff, size_t buff_size);
-void print_file();
+void reset_grid();
+inline void print_file();
 
 /* Scans the command input by the user to cmd, if a special key (like the arrows) is
  * pressed, returns that integer so main can act. Return codes are in src/defines.h
@@ -59,13 +60,14 @@ int parse_command(const char* cmd) {
         return CMD_QUIT;
     } else if (!strcmp(fw, "help")) {
         cmd_help();
-        // Commands with arguments
     } else if (!strcmp(fw, "load")) {
         load_file(sw);
     } else if (!strcmp(fw, "reload")) {
         fpos = 0;
     } else if (!strcmp(fw, "unload")) {
         unload(bf, FILE_BUFF_SIZE);
+    } else if (!strcmp(fw, "reset")) {
+        reset_grid();
     } else if (!strcmp(fw, "step")) {
         bf_step();
     } else if (!strcmp(fw, "print")) {
@@ -89,6 +91,7 @@ void cmd_help() {
                "file from start)\n"
                "    unload          | Clears the loaded file's buffer\n"
                "    print           | Prints the contents of the loaded file\n"
+               "    reset           | Resets the brainfuck grid\n"
                "    step            | Processes the current brainfuck char from the "
                "buffer\n"
                "    refresh         | Calls refresh()\n");
@@ -122,6 +125,11 @@ void load_file(const char* name) {
     fpos        = 0;    // Reset file pos
     file_loaded = 1;
     cmd_output("File loaded.");
+}
+
+void reset_grid() {
+    for (int n = 0; n < GRID_C; n++) cell_arr[n] = '\0';
+    cmd_output("Reset grid.");
 }
 
 // Prints the contents of the loaded file
