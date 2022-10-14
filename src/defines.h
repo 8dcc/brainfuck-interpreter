@@ -7,6 +7,7 @@
 #define GRID_Y      3
 #define GRID_C      200    // Max number of items (Not items per page)
 #define MIN_GRID_CW 1      // Min width of the cells
+#define MAX_GRID_CW 4      // Max width of the cells. Controlled by bf_step()
 
 #define INPUT_Y     GRID_Y + 6
 #define OUTPUT_X    GRID_X
@@ -47,3 +48,13 @@ char bf[FILE_BUFF_SIZE] = { 0 };
 
 // Will be 1 if we have loaded a file
 int file_loaded = 0;
+
+// Current character in the loaded file
+int fpos = 0;
+
+// Brainfuck cell array
+int cell_arr[GRID_C * sizeof(int)];
+
+// Current brainfuck cell
+int cur_cell = 0;
+

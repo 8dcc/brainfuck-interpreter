@@ -7,6 +7,7 @@
 #include "defines.h"
 #include "misc.h"
 #include "interface.h"
+#include "brainfuck.h"
 #include "commands.h"
 
 int main() {
@@ -17,9 +18,8 @@ int main() {
 
     mvprintw(1, GRID_X, "Type 'help' for a list of available commands...");
 
-    // Declare and initialize as 0 the cell array for the memory simulation
-    int cell_arr[GRID_C * sizeof(int)];
-    for (int n = 0; n < GRID_C; n++) cell_arr[n] = n;
+    // Initialize as 0 the cell array for the memory simulation
+    for (int n = 0; n < GRID_C; n++) cell_arr[n] = 0;
 
     // Used to store the current command
     char* cmd    = calloc(BUFF_SIZE, sizeof(char));

@@ -11,6 +11,17 @@ int get_digits(const int target) {
     return ret;
 }
 
+// Returns the max number with the specified digits (4 -> 9999)
+long digit2maxnum(int digits) {
+    int ret = 10;
+
+    // Digit - 1 because we already start at 10
+    for (int n = 0; n < digits - 1; n++) ret *= 10;
+
+    // -1 because we dont want 100, but 99
+    return ret - 1;
+}
+
 void die(const char* s) {
     endwin();    // End ncurses
 

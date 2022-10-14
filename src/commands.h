@@ -1,6 +1,7 @@
 
 void cmd_help();
 void load_file(const char* name);
+void unload(char* buff, size_t buff_size);
 void print_file();
 
 /* Scans the command input by the user to cmd, if a special key (like the arrows) is
@@ -61,6 +62,12 @@ int parse_command(const char* cmd) {
         // Commands with arguments
     } else if (!strcmp(fw, "load")) {
         load_file(sw);
+    } else if (!strcmp(fw, "reload")) {
+        fpos = 0;
+    } else if (!strcmp(fw, "unload")) {
+        unload(bf, FILE_BUFF_SIZE);
+    } else if (!strcmp(fw, "step")) {
+        bf_step();
     } else if (!strcmp(fw, "print")) {
         print_file();
     } else {
@@ -82,6 +89,12 @@ void cmd_help() {
                "    refresh         | Calls refresh()\n");
 }
 
+void unload(char* buff, size_t buff_size) {
+    for (int n = 0; n < buff_size; n++) buff[n] = '\0';
+
+    file_loaded = 0;
+}
+
 void load_file(const char* name) {
     FILE* fd = fopen(name, "r");
     if (!fd) {
@@ -94,16 +107,24 @@ void load_file(const char* name) {
         return;
     }
 
-    int c = 0;
-    for (int n = 0; n < FILE_BUFF_SIZE && (c = fgetc(fd)) != EOF; n++) { bf[n] = c; }
+    // Call unload to clear the buffer
+    unload(bf, FILE_BUFF_SIZE);
 
-    cmd_output("File loaded.");
+    int c = 0;
+    for (int n = 0; n < FILE_BUFF_SIZE && (c = fgetc(fd)) != EOF; n++)
+        bf[n] = c;    // Get char from file and save it to bf buffer
+
+    fpos        = 0;    // Reset file pos
     file_loaded = 1;
+    cmd_output("File loaded.");
 }
 
 // Prints the contents of the loaded file
 void print_file() {
-    if (!file_loaded) return;
+    if (!file_loaded) {
+        cmd_output("Can't print. No loaded file.");
+        return;
+    }
 
     cmd_output(bf);
 }
