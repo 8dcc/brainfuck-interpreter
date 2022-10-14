@@ -85,7 +85,12 @@ void cmd_help() {
                "    help            | Shows this help\n"
                "    quit            | Exit the program\n"
                "    load <filename> | Loads the contents of the specified file\n"
+               "    reload          | Reloads the current file (start processing "
+               "file from start)\n"
+               "    unload          | Clears the loaded file's buffer\n"
                "    print           | Prints the contents of the loaded file\n"
+               "    step            | Processes the current brainfuck char from the "
+               "buffer\n"
                "    refresh         | Calls refresh()\n");
 }
 
