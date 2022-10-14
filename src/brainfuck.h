@@ -8,7 +8,7 @@ void bf_step() {
         return;
     }
     // If we reached EOF. +1 because we haven't increased fpos yet
-    if (fpos+1 >= strlen(bf)) {
+    if (fpos + 1 >= strlen(bf)) {
         cmd_output("Can't step. End of file reached.");
         return;
     }
@@ -33,10 +33,12 @@ void bf_step() {
         case ',':
             cmd_output("Scanning brainfuck character...");
             cell_arr[cur_cell] = getch();
-            cmd_output("Got brainfuck character...");    // TODO: va_list
+            cmd_output("Got brainfuck character: %c (%d)", cell_arr[cur_cell],
+                       cell_arr[cur_cell]);
             break;
         case '.':
-            cmd_output("Printing brainfuck character...");    // TODO: va_list
+            cmd_output("Printing brainfuck character: %c (%d)", cell_arr[cur_cell],
+                       cell_arr[cur_cell]);
             break;
         // TODO: [ ]
         default:

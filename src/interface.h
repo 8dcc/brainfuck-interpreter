@@ -143,7 +143,10 @@ void clr_cmd_output() {
     for (int n = 0; n < OUTPUT_ROWS; n++) clr_line(OUTPUT_Y + n);
 }
 
-void cmd_output(const char* str) {
+void cmd_output(const char* str, ...) {
+    va_list va;
+    va_start(va, str);
+
     // Get terminal and output region widths
     const int term_w = getmaxx(stdscr);
     const int out_w  = (term_w - GRID_X * 2);
@@ -184,7 +187,9 @@ void cmd_output(const char* str) {
         }
     }
 
-    mvprintw(OUTPUT_Y, OUTPUT_X, buff);
+    move(OUTPUT_Y, OUTPUT_X);
+    vw_printw(stdscr, buff, va);
+    va_end(va);
 
     refresh();
 }
