@@ -150,12 +150,12 @@ void print_file() {
 }
 
 void toggle_log() {
+    log_output = !log_output;
+
     // Clear file
     if (log_output) {
         FILE* fd = fopen(LOG_NAME, "w");
         fclose(fd);
     }
-
-    log_output = !log_output;
-    cmd_output((log_output) ? "Logging enabled...\n\n" : "Logging disabled...\n\n");
+    cmd_output((log_output) ? "Logging enabled...\n" : "Logging disabled...\n");
 }
