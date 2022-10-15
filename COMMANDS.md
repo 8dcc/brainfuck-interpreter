@@ -11,4 +11,5 @@ Cmd               | Description
 `reset`           | Resets the brainfuck grid
 `print`           | Prints the contents of the loaded file
 `step`            | Processes the current brainfuck char from the buffer
+`log`             | Toggles output logging to file
 `refresh`         | Calls `refresh()`

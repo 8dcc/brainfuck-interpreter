@@ -97,6 +97,7 @@ void cmd_help() {
                "    reset           | Resets the brainfuck grid\n"
                "    step            | Processes the current brainfuck char from the "
                "buffer\n"
+               "    log             | Toggles output logging to file\n"
                "    refresh         | Calls refresh()\n");
 }
 
