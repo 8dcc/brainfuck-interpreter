@@ -4,6 +4,7 @@ void load_file(const char* name);
 void unload(char* buff, size_t buff_size);
 void reset_grid();
 inline void print_file();
+inline void toggle_log();
 
 /* Scans the command input by the user to cmd, if a special key (like the arrows) is
  * pressed, returns that integer so main can act. Return codes are in src/defines.h
@@ -72,6 +73,8 @@ int parse_command(const char* cmd) {
         bf_step();
     } else if (!strcmp(fw, "print")) {
         print_file();
+    } else if (!strcmp(fw, "log")) {
+        toggle_log();
     } else {
         cmd_output("Invalid command!");
     }
@@ -112,6 +115,7 @@ void load_file(const char* name) {
         fail_cmd(buff);
 
         free(buff);
+        fclose(fd);
         return;
     }
 
@@ -122,9 +126,11 @@ void load_file(const char* name) {
     for (int n = 0; n < FILE_BUFF_SIZE && (c = fgetc(fd)) != EOF; n++)
         bf[n] = c;    // Get char from file and save it to bf buffer
 
+    fclose(fd);
+
     fpos        = 0;    // Reset file pos
     file_loaded = 1;
-    cmd_output("File loaded.");
+    cmd_output("File '%s' loaded.", name);
 }
 
 void reset_grid() {
@@ -140,4 +146,15 @@ void print_file() {
     }
 
     cmd_output(bf);
+}
+
+void toggle_log() {
+    // Clear file
+    if (log_output) {
+        FILE* fd = fopen(LOG_NAME, "w");
+        fclose(fd);
+    }
+
+    log_output = !log_output;
+    cmd_output((log_output) ? "Logging enabled...\n\n" : "Logging disabled...\n\n");
 }

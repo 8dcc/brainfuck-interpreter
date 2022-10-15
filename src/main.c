@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>      // For time()
 #include <stdarg.h>    // For va_list
 #include <ctype.h>     // For tolower()
 #include <ncurses.h>

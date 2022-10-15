@@ -33,8 +33,8 @@ void draw_grid() {
     mvprintw(y + 2, x, "+");
 
     for (int n = 0; n < cells; n++) {
-        /* Center of each cell. We use +1 because of the initial left border and 2*n
-         * because its the space of a cell times the current cell number:
+        /* Center of each cell. We use +1 because of the initial left border and
+         * 2*n because its the space of a cell times the current cell number:
          *   -+-+-+
          *    | | |
          *   -+-+-+
@@ -84,8 +84,8 @@ void fill_cell(int idx, const char* str) {
     // Return if we are out of bounds
     if (idx >= gcpp) return;
 
-    // Center of y, base x pos + leftmost border + (right border of the cell + cell
-    // width) * cell number
+    // Center of y, base x pos + leftmost border + (right border of the cell +
+    // cell width) * cell number
     mvprintw(gy + 1, gx + 1 + (1 + gcw) * idx, "%s", str);
 
     // Print the chars behind the cells (centered)
@@ -104,8 +104,8 @@ int int2char(int num) {
     return 0;
 }
 
-// Calls fill_cell for the necesary items to fill the whole grid. Also prints the
-// page number
+// Calls fill_cell for the necesary items to fill the whole grid. Also prints
+// the page number
 void fill_grid(int* cell_arr, int page) {
     char* buff   = calloc(255, sizeof(char));
     int real_idx = 0;
@@ -123,7 +123,8 @@ void fill_grid(int* cell_arr, int page) {
 
     free(buff);
 
-    // Print page numbers. Keep in mind that we add one so its '1/5' instead of '0/4'
+    // Print page numbers. Keep in mind that we add one so its '1/5' instead of
+    // '0/4'
     mvprintw((PRINT_CHARS) ? GRID_Y + 4 : GRID_Y + 3, GRID_X, "[Page %d/%d]",
              page + 1, GRID_C / GRID_CPP + 1);
 
@@ -163,7 +164,6 @@ void cmd_output(const char* str, ...) {
     for (int n = 0; buff_pos < FILE_BUFF_SIZE && n < FILE_BUFF_SIZE &&
                     str[n] != '\0' && line < out_h;
          n++) {
-
         buff[buff_pos++] = str[n];
         line_p++;
 
@@ -185,6 +185,19 @@ void cmd_output(const char* str, ...) {
                 break;
             }
         }
+    }
+
+    if (log_output) {
+        FILE* fd = fopen(LOG_NAME, "a");
+
+        if (LOG_TIME) fprintf(fd, "[%ld] ", time(NULL));
+
+        vfprintf(fd, str, va);
+
+        // Print newline if str doesn't have one
+        if (str[strlen(str)-1] != '\n') fprintf(fd, "\n");
+
+        fclose(fd);
     }
 
     move(OUTPUT_Y, OUTPUT_X);

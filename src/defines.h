@@ -28,6 +28,8 @@
 #define PRINT_CHARS    1    // Will print 'c' bellow the cells if true
 #define BUFF_SIZE      255
 #define FILE_BUFF_SIZE 2000    // Max brainfuck file size. Method should be improved
+#define LOG_NAME "bf-interpreter.log"
+#define LOG_TIME 1
 
 /*--------------------------------------------------------------------------------*/
 // Macros
@@ -57,4 +59,7 @@ int cell_arr[GRID_C * sizeof(int)];
 
 // Current brainfuck cell
 int cur_cell = 0;
+
+// Enable logging
+int log_output = 0;
 
