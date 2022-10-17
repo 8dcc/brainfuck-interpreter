@@ -45,10 +45,23 @@ int scan_command(char* cmd, int* pos, int max_len) {
     return CMD_OKAY;
 }
 
-// Scans for commands
-int parse_command(const char* cmd) {
+/*
+ * Parses the commands, does what it needs to do depending on the command and returns
+ * CMD_CODE for special cases.
+ * cmd argument is not const because we will replace cmd with the last used command
+ * if cmd is just '\n'.
+ */
+int parse_command(char* cmd) {
+    static char last_cmd[BUFF_SIZE] = { '\0' };
+
     draw_cmd_input("");    // Clear the cmd line
     clr_cmd_output();
+
+    // If user cmd is empty, use last cmd. If is not, overwrite the last cmd
+    if (cmd[0] == '\0')
+        cmd = last_cmd;
+    else
+        strcpy(last_cmd, cmd);
 
     // Store the word ptrs here so we can free them later. Feel free to PR if there
     // is a better way.

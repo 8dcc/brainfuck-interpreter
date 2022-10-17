@@ -24,9 +24,9 @@ int main() {
     for (int n = 0; n < GRID_C; n++) cell_arr[n] = 0;
 
     // Used to store the current command
-    char* cmd    = calloc(BUFF_SIZE, sizeof(char));
-    int cmd_code = CMD_OKAY;    // All defined in defines.h
-    int cmd_pos  = 0;
+    char cmd[BUFF_SIZE] = { '\0' };
+    int cmd_code        = CMD_OKAY;    // All defined in defines.h
+    int cmd_pos         = 0;
 
     // Max pages of the grid. Updated each loop because the terminal size might
     // change
@@ -85,8 +85,6 @@ int main() {
                 break;    // End cmd_code switch
         }
     }    // End of main loop
-
-    free(cmd);
 
     // End ncurses window
     endwin();
