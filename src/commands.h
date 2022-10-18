@@ -66,9 +66,8 @@ int parse_command(char* cmd) {
 
     // Store the word ptrs here so we can free them later. Feel free to PR if there
     // is a better way.
-    char* fw         = first_word(cmd);
-    char* sw         = second_word(cmd);
-    int bf_step_buff = 0;    // Used to store the return of bf_step()
+    char* fw = first_word(cmd);
+    char* sw = second_word(cmd);
 
     if (!strcmp(fw, "refresh")) {
         refresh();
@@ -86,14 +85,12 @@ int parse_command(char* cmd) {
         reset_grid();
     } else if (!strcmp(fw, "step")) {
         if (skip_comments)
-            while (bf_step() == BF_UNKNOWN)
+            while (bf_step(1) == BF_UNKNOWN)
                 ;
         else
-            bf_step();
+            bf_step(1);
     } else if (!strcmp(fw, "run")) {
-        // Call bf_step() while we are not finished and while we have our file loaded
-        while ((bf_step_buff = bf_step()) != BF_EOF && bf_step_buff != BF_NOFILE)
-            ;
+        bf_run();
     } else if (!strcmp(fw, "print")) {
         print_file();
     } else if (!strcmp(fw, "log")) {
@@ -126,7 +123,9 @@ void cmd_help() {
                "    run             | Runs step until the bf buffer is executed\n"
                "    log             | Toggles output logging to file\n"
                "    skip_comments   | Toggles comment skipping when processing bf\n"
-               "    refresh         | Calls refresh()\n");
+               "    refresh         | Calls refresh()\n"
+               "\n"
+               "Tip: You can press enter to execute the last command.\n");
 }
 
 void unload(char* buff, size_t buff_size) {
@@ -193,3 +192,4 @@ void toggle_skip_comments() {
     cmd_output((skip_comments) ? "Ingnoring comments...\n"
                                : "Printing comments...\n");
 }
+
