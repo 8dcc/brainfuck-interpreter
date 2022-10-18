@@ -58,11 +58,18 @@ int parse_command(char* cmd) {
     draw_cmd_input("");    // Clear the cmd line
     clr_cmd_output();
 
-    // If user cmd is empty, use last cmd. If is not, overwrite the last cmd
-    if (cmd[0] == '\0')
-        cmd = last_cmd;
-    else
+    // If user cmd is empty, use last cmd if its not empty as well. If is not,
+    // overwrite the last cmd.
+    if (cmd[0] == '\0') {
+        if (last_cmd[0] == '\0') {
+            cmd_output("No previous command!");
+            return CMD_OKAY;
+        } else {
+            cmd = last_cmd;
+        }
+    } else {
         strcpy(last_cmd, cmd);
+    }
 
     // Store the word ptrs here so we can free them later. Feel free to PR if there
     // is a better way.
