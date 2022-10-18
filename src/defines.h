@@ -14,9 +14,11 @@
 #define OUTPUT_Y    GRID_Y + 8
 #define OUTPUT_ROWS 40    // Space reserved for output
 
+// Bf codes
+enum { BF_OKAY = 0, BF_UNKNOWN, BF_EOF, BF_NOFILE };
+
 // Cmd codes
-#define CMD_OKAY 0
-#define CMD_QUIT 1
+enum { CMD_OKAY = 0, CMD_QUIT };
 
 // Cmd keys
 #define KEY_LARROW 260
@@ -28,8 +30,8 @@
 #define PRINT_CHARS    1    // Will print 'c' bellow the cells if true
 #define BUFF_SIZE      255
 #define FILE_BUFF_SIZE 2000    // Max brainfuck file size. Method should be improved
-#define LOG_NAME "bf-interpreter.log"
-#define LOG_TIME 1
+#define LOG_NAME       "bf-interpreter.log"
+#define LOG_TIME       1
 
 /*--------------------------------------------------------------------------------*/
 // Macros
@@ -63,3 +65,5 @@ int cur_cell = 0;
 // Enable logging
 int log_output = 0;
 
+// Skip bf comments
+int skip_comments = 0;

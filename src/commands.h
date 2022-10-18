@@ -5,6 +5,7 @@ void unload(char* buff, size_t buff_size);
 void reset_grid();
 inline void print_file();
 inline void toggle_log();
+inline void toggle_skip_comments();
 
 /* Scans the command input by the user to cmd, if a special key (like the arrows) is
  * pressed, returns that integer so main can act. Return codes are in src/defines.h
@@ -65,8 +66,9 @@ int parse_command(char* cmd) {
 
     // Store the word ptrs here so we can free them later. Feel free to PR if there
     // is a better way.
-    char* fw = first_word(cmd);
-    char* sw = second_word(cmd);
+    char* fw         = first_word(cmd);
+    char* sw         = second_word(cmd);
+    int bf_step_buff = 0;    // Used to store the return of bf_step()
 
     if (!strcmp(fw, "refresh")) {
         refresh();
@@ -83,11 +85,22 @@ int parse_command(char* cmd) {
     } else if (!strcmp(fw, "reset")) {
         reset_grid();
     } else if (!strcmp(fw, "step")) {
-        bf_step();
+        if (skip_comments)
+            while (bf_step() == BF_UNKNOWN)
+                ;
+        else
+            bf_step();
+    } else if (!strcmp(fw, "run")) {
+        // Call bf_step() while we are not finished and while we have our file loaded
+        while ((bf_step_buff = bf_step()) != BF_EOF && bf_step_buff != BF_NOFILE)
+            ;
     } else if (!strcmp(fw, "print")) {
         print_file();
     } else if (!strcmp(fw, "log")) {
         toggle_log();
+    } else if (!strcmp(fw, "skip_comments") || !strcmp(fw, "ignore_comments") ||
+               !strcmp(fw, "toggle_comments")) {
+        toggle_skip_comments();
     } else {
         cmd_output("Invalid command!");
     }
@@ -110,7 +123,9 @@ void cmd_help() {
                "    reset           | Resets the brainfuck grid\n"
                "    step            | Processes the current brainfuck char from the "
                "buffer\n"
+               "    run             | Runs step until the bf buffer is executed\n"
                "    log             | Toggles output logging to file\n"
+               "    skip_comments   | Toggles comment skipping when processing bf\n"
                "    refresh         | Calls refresh()\n");
 }
 
@@ -171,4 +186,10 @@ void toggle_log() {
         fclose(fd);
     }
     cmd_output((log_output) ? "Logging enabled...\n" : "Logging disabled...\n");
+}
+
+void toggle_skip_comments() {
+    skip_comments = !skip_comments;
+    cmd_output((skip_comments) ? "Ingnoring comments...\n"
+                               : "Printing comments...\n");
 }

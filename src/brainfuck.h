@@ -3,19 +3,19 @@
  */
 
 // TODO: Return char for skipping invalid chars
-void bf_step() {
+int bf_step() {
     // Used to track loop nesting for '[' and ']'
     static int loop_nesting = 0;
     int cur_loop_count      = 0;
 
     if (!file_loaded) {
         cmd_output("Can't step. No file loaded.");
-        return;
+        return BF_NOFILE;
     }
     // If we reached EOF. +1 because we haven't increased fpos yet
     if (fpos + 1 >= strlen(bf)) {
         cmd_output("Can't step. End of file reached.");
-        return;
+        return BF_EOF;
     }
 
     int char_buff = bf[fpos++];
@@ -69,12 +69,17 @@ void bf_step() {
             }
             break;
         default:
+            if (skip_comments) return BF_UNKNOWN;
+
             if (char_buff == '\n')
                 cmd_output("Stepped invalid char: '\\n'");
             else
                 cmd_output("Stepped invalid char: '%c'", char_buff);
-            break;
+
+            REFRESH_0();
+            return BF_UNKNOWN;
     }
 
     REFRESH_0();
+    return BF_OKAY;
 }
