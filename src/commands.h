@@ -1,4 +1,5 @@
 
+inline void ctrl_del(char* str, int* cursor_pos);
 void cmd_help();
 void load_file(const char* name);
 void unload(char* buff, size_t buff_size);
@@ -7,7 +8,8 @@ inline void print_file();
 inline void toggle_log();
 inline void toggle_skip_comments();
 
-/* Scans the command input by the user to cmd, if a special key (like the arrows) is
+/*
+ * Scans the command input by the user to cmd, if a special key (like the arrows) is
  * pressed, returns that integer so main can act. Return codes are in src/defines.h
  *
  * cmd is the command string ptr, pos is a pointer to the variable that stores the
@@ -32,6 +34,10 @@ int scan_command(char* cmd, int* pos, int max_len) {
                 if (*pos > 0) cmd[--(*pos)] = '\0';
                 draw_cmd_input(cmd);
                 continue;
+            case KEY_CTRLDEL:
+                ctrl_del(cmd, pos);
+                draw_cmd_input(cmd);
+                continue;
             default:
                 break;
         }
@@ -44,6 +50,31 @@ int scan_command(char* cmd, int* pos, int max_len) {
     }
 
     return CMD_OKAY;
+}
+
+// Removes the last word from a string in a pos
+void ctrl_del(char* str, int* cursor_pos) {
+    int i;
+    int prev_c = *cursor_pos - 1;
+
+    /*
+     * Search for spaces. Cursor pos - 1 because the cursor is "after the word":
+     *
+     * > Test 123 otherword
+     *           ^  prev_c (8)
+     *            ^ Cursor pos (9). In line cursor would be after the space but both
+     *              cases are the same.
+     *        ^^^^  Should delete [5-8]
+     */
+    for (i = prev_c; i >= 0; i--) {
+        // Exit if we enountered a space, but make sure prev_c was not the first
+        // space.
+        if (str[i] == ' ' && i != prev_c) break;
+
+        str[i] = '\0';
+    }
+
+    *cursor_pos = i + 1;
 }
 
 /*

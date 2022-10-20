@@ -21,10 +21,11 @@ enum { BF_OKAY = 0, BF_UNKNOWN, BF_EOF, BF_NOFILE };
 enum { CMD_OKAY = 0, CMD_QUIT };
 
 // Cmd keys
-#define KEY_LARROW 260
-#define KEY_RARROW 261
-#define KEY_DEL    263
-#define KEY_CTRLC  3
+#define KEY_LARROW  260
+#define KEY_RARROW  261
+#define KEY_DEL     263
+#define KEY_CTRLDEL 8
+#define KEY_CTRLC   3
 
 // Misc
 #define PRINT_CHARS    1    // Will print 'c' bellow the cells if true
