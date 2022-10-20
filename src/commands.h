@@ -117,6 +117,7 @@ int parse_command(char* cmd) {
         load_file(sw);
     } else if (!strcmp(fw, "reload")) {
         fpos = 0;
+        cmd_output("Reloading file...");
     } else if (!strcmp(fw, "unload")) {
         unload(bf, FILE_BUFF_SIZE);
     } else if (!strcmp(fw, "reset")) {
@@ -170,6 +171,7 @@ void unload(char* buff, size_t buff_size) {
     for (int n = 0; n < buff_size; n++) buff[n] = '\0';
 
     file_loaded = 0;
+    cmd_output("File unloaded.");
 }
 
 void load_file(const char* name) {
@@ -201,7 +203,8 @@ void load_file(const char* name) {
 
 void reset_grid() {
     for (int n = 0; n < GRID_C; n++) cell_arr[n] = '\0';
-    cmd_output("Reset grid.");
+    cur_cell = 0;
+    cmd_output("Grid reset.");
 }
 
 // Prints the contents of the loaded file
