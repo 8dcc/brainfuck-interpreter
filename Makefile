@@ -1,15 +1,17 @@
 
 CC=gcc
 CFLAGS=-Wall
-BIN=bf-interpreter
+BIN=bf-interpreter.out
 
-all: $(BIN).out
+.PHONY: clean all run
 
-$(BIN).out: src/*.c src/*.h
+all: $(BIN)
+
+$(BIN): src/*.c src/*.h
 	$(CC) $(CFLAGS) -o $@ src/main.c -lncurses
 
-run: $(BIN).out
+run: $(BIN)
 	./$<
 
 clean:
-	rm $(BIN).out
+	rm $(BIN)
